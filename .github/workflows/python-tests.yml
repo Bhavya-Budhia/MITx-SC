@@ -29,9 +29,4 @@ jobs:
     
     - name: Run tests with pytest
       run: |
-        pytest utils/testing/test_all.py -v --cov=utils/testing
-    
-    - name: Upload coverage reports
-      uses: codecov/codecov-action@v3
-      with:
-        fail_ci_if_error: true
+        python -m pytest utils/testing/test_all.py -v
