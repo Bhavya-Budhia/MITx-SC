@@ -1,89 +1,95 @@
-"""Test functions for hypothesis testing problems."""
+"""Test functions for QuickPrint Processing Time Analysis."""
 import numpy as np
 from scipy import stats
 
-def check_test_statistic(test_stat, expected=-8.742, tolerance=0.01):
+def check_test_statistic(t_stat, expected=-12.45, tolerance=0.1):
     """
-    Check if calculated test statistic is correct.
+    Check if calculated t-statistic is correct.
     
     Args:
-        test_stat (float): Calculated test statistic
-        expected (float): Expected test statistic
+        t_stat (float): Calculated t-statistic
+        expected (float): Expected t-statistic (-12.45)
         tolerance (float): Acceptable difference from expected value
         
     Returns:
-        bool: True if test statistic is within tolerance of expected value
+        bool: True if t-statistic is within tolerance of expected value
     """
-    return abs(test_stat - expected) <= tolerance
+    if t_stat is None:
+        return False
+    return abs(t_stat - expected) <= tolerance
 
-def check_p_value(p_value, alpha=0.05, tolerance=0.001):
+def check_p_value(p_val, expected=2.97e-7, tolerance=1e-6):
     """
-    Check if calculated p-value is correct and interpreted properly.
+    Check if calculated p-value is correct.
     
     Args:
-        p_value (float): Calculated p-value
-        alpha (float): Significance level
+        p_val (float): Calculated p-value
+        expected (float): Expected p-value (2.97e-7)
         tolerance (float): Acceptable difference from expected value
         
     Returns:
-        dict: Dictionary with validation results
+        bool: True if p-value is within tolerance of expected value
     """
-    expected_p = 0.0000124  # Example expected p-value
-    p_value_correct = abs(p_value - expected_p) <= tolerance
-    decision_correct = (p_value < alpha)
-    
-    return {
-        'p_value_correct': p_value_correct,
-        'decision_correct': decision_correct
-    }
+    if p_val is None:
+        return False
+    return abs(p_val - expected) <= tolerance
 
-def check_conclusion(sample_data, mu0=720, alpha=0.05):
+def check_conclusion(reject_null):
     """
-    Verify hypothesis test conclusion based on sample data.
+    Check if conclusion about null hypothesis is correct.
     
     Args:
-        sample_data (list): List of sample measurements
-        mu0 (float): Null hypothesis value
-        alpha (float): Significance level
+        reject_null (bool): True if null hypothesis was rejected
         
     Returns:
-        dict: Dictionary with test results
+        bool: True if conclusion is correct
     """
-    # Calculate sample statistics
-    n = len(sample_data)
-    sample_mean = np.mean(sample_data)
-    sample_std = np.std(sample_data, ddof=1)
-    
-    # Calculate test statistic
-    t_stat = (sample_mean - mu0) / (sample_std / np.sqrt(n))
-    
-    # Calculate p-value (one-tailed test)
-    p_value = stats.t.cdf(t_stat, df=n-1)
-    
-    return {
-        't_statistic': t_stat,
-        'p_value': p_value,
-        'reject_null': p_value < alpha
-    }
+    if reject_null is None:
+        return False
+    return reject_null is True  # We should reject H₀ in this case
 
-def verify_assumptions(sample_data):
+def check_assumptions(times):
     """
-    Check if assumptions for t-test are met.
+    Check if test assumptions are satisfied.
     
     Args:
-        sample_data (list): List of sample measurements
+        times (array): Array of processing times
         
     Returns:
         dict: Dictionary with assumption test results
     """
-    # Check normality using Shapiro-Wilk test
-    _, p_value_normality = stats.shapiro(sample_data)
+    if times is None or len(times) == 0:
+        return {'normality': False, 'independence': False}
+        
+    # Shapiro-Wilk test for normality
+    _, norm_p = stats.shapiro(times)
     
-    # Check for outliers using z-score method
-    z_scores = np.abs(stats.zscore(sample_data))
-    has_outliers = any(z_scores > 3)
+    # Basic independence check (no autocorrelation)
+    if len(times) > 1:
+        autocorr = np.corrcoef(times[:-1], times[1:])[0,1]
+        indep = abs(autocorr) < 0.5
+    else:
+        indep = False
     
     return {
-        'normality_satisfied': p_value_normality > 0.05,
-        'no_outliers': not has_outliers
+        'normality': norm_p > 0.05,
+        'independence': indep
     }
+
+def calculate_power(effect_size=0.8, alpha=0.05, n=10):
+    """
+    Calculate power of the test.
+    
+    Args:
+        effect_size (float): Cohen's d effect size
+        alpha (float): Significance level
+        n (int): Sample size
+        
+    Returns:
+        float: Power of the test
+    """
+    return stats.t.sf(
+        stats.t.ppf(1-alpha, df=n-1),
+        df=n-1,
+        nc=effect_size*np.sqrt(n)
+    )

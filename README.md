@@ -80,6 +80,16 @@ An interactive educational repository for learning mathematical concepts through
   - Conditional probability
   - Multiple event probability
 
+- **Booboo Interactive**: Supply chain risk analysis through probability
+  - Risk probability calculations
+  - Stockout probability
+  - Risk boundaries and thresholds
+
+- **Bookwise Interactive**: Book demand forecasting with probability
+  - Demand prediction
+  - Confidence intervals
+  - Multiple confidence levels
+
 ### 4. Statistics
 - **SunGlass Hut Inventory**: Apply normal distribution to retail inventory management
   - Service level analysis
@@ -117,6 +127,8 @@ math_problems/
 │   └── distribution/
 ├── probability/
 │   └── gamestop_preorder.md
+│   └── booboo_interactive.md
+│   └── bookwise_interactive.md
 ├── statistics/
 │   ├── sunglass_inventory.md
 │   └── quickprint_optimization.md
@@ -193,6 +205,29 @@ Each problem includes:
 - All problems include automated tests
 - Tests run on Python 3.8, 3.9, and 3.10
 - Coverage reports available through CodeCov
+
+## Testing Framework
+
+The repository includes a comprehensive testing framework in `utils/testing/`:
+
+### Core Test Modules
+- `test_all.py`: Main test runner
+- `probability_tests.py`: Basic probability concept tests
+- `inventory_tests.py`: Inventory management tests
+- `hypothesis_tests.py`: Statistical testing
+- `regression_tests.py`: Regression analysis tests
+
+### Optimization Tests
+- `test_warehouse_location.py`: Tests for facility location models
+- `test_supply_network.py`: Tests for network optimization
+- `test_production_optimization.py`: Tests for production planning
+- `test_beverageco.py`: Tests for beverage production
+- `test_riskshield.py`: Tests for risk management
+- `test_greenchain.py`: Tests for sustainable supply chain
+
+### Case Study Tests
+- `test_booboo_interactive.py`: Tests for supply chain risk analysis
+- `test_bookwise_interactive.py`: Tests for demand forecasting
 
 ## License
 
