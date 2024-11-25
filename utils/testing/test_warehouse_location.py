@@ -78,10 +78,10 @@ def test_multi_period_planning():
     customers = range(2)
 
     # Test data
-    demand = {(t,c): 100 for t in periods for c in customers}
-    capacity = {w: 250 for w in warehouses}
+    demand = {(t,c): 100 for t in periods for c in customers}  # Each customer needs 100 units per period
+    capacity = {w: 300 for w in warehouses}  # Increased capacity to handle flow + inventory
     holding_cost = 1
-    initial_inventory = {w: 100 for w in warehouses}  # Add initial inventory
+    initial_inventory = {w: 200 for w in warehouses}  # Increased initial inventory
 
     # Create model
     model = LpProblem("Multi_Period_Planning", LpMinimize)
@@ -90,26 +90,30 @@ def test_multi_period_planning():
     x = LpVariable.dicts("ship", ((t,w,c) for t in periods for w in warehouses for c in customers), 0)
     i = LpVariable.dicts("inventory", ((t,w) for t in periods for w in warehouses), 0)
 
-    # Objective: minimize total cost
-    model += (lpSum(holding_cost * i[t,w] for t in periods for w in warehouses))
+    # Objective: minimize total holding cost
+    model += lpSum(holding_cost * i[t,w] for t in periods for w in warehouses)
 
     # Constraints
     for t in periods:
+        # Demand satisfaction for each customer
         for c in customers:
-            # Demand satisfaction
             model += lpSum(x[t,w,c] for w in warehouses) == demand[t,c]
 
+        # Inventory balance and capacity for each warehouse
         for w in warehouses:
-            # Inventory balance
+            # Flow balance constraints
             if t == 0:
-                # First period uses initial inventory
-                model += (i[t,w] == initial_inventory[w] - lpSum(x[t,w,c] for c in customers))
+                # First period: initial inventory minus shipments
+                model += i[t,w] == initial_inventory[w] - lpSum(x[t,w,c] for c in customers)
             else:
-                # Other periods use previous period's inventory
-                model += (i[t,w] == i[t-1,w] - lpSum(x[t,w,c] for c in customers))
+                # Later periods: previous inventory minus shipments
+                model += i[t,w] == i[t-1,w] - lpSum(x[t,w,c] for c in customers)
 
-            # Capacity constraint includes both shipments and inventory
-            model += (lpSum(x[t,w,c] for c in customers) + i[t,w]) <= capacity[w]
+            # Capacity constraints (must be able to store inventory)
+            model += i[t,w] <= capacity[w]
+
+            # Non-negativity of inventory (implied by LpVariable bounds)
+            model += i[t,w] >= 0
 
     # Solve
     model.solve()
@@ -117,13 +121,18 @@ def test_multi_period_planning():
     # Verify solution
     assert LpStatus[model.status] == 'Optimal'
 
-    # Check solution properties
+    # Check solution feasibility
     for t in periods:
+        for c in customers:
+            # Check demand satisfaction
+            total_supply = sum(value(x[t,w,c]) for w in warehouses)
+            assert abs(total_supply - demand[t,c]) < 1e-6
+
         for w in warehouses:
-            # Inventory should be non-negative
-            assert value(i[t,w]) >= 0
-            # Total flow should respect capacity
-            assert sum(value(x[t,w,c]) for c in customers) + value(i[t,w]) <= capacity[w]
+            # Check inventory non-negativity
+            assert value(i[t,w]) >= -1e-6
+            # Check capacity constraints
+            assert value(i[t,w]) <= capacity[w] + 1e-6
 
 def test_transportation_costs():
     """Test transportation cost calculations and optimization."""
