@@ -22,7 +22,8 @@ from .hypothesis_tests import (
 from .regression_tests import (
     check_coefficients,
     check_prediction,
-    check_diagnostics
+    check_diagnostics,
+    calculate_intervals
 )
 
 __all__ = [
@@ -45,5 +46,6 @@ __all__ = [
     # Regression
     'check_coefficients',
     'check_prediction',
-    'check_diagnostics'
+    'check_diagnostics',
+    'calculate_intervals'
 ]
