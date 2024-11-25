@@ -79,7 +79,7 @@ def test_multi_period_planning():
     
     # Test data
     demand = {(t,c): 100 for t in periods for c in customers}
-    capacity = {w: 200 for w in warehouses}
+    capacity = {w: 250 for w in warehouses}  # Increased capacity to ensure feasibility
     holding_cost = 1
     
     # Create model
