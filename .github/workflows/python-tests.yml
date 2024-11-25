@@ -28,15 +28,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
-    - name: Create test directories and init files
+    - name: Create cache directory
       run: |
         mkdir -p utils/testing/__pycache__
-        touch utils/testing/__init__.py
-        touch utils/__init__.py
     
     - name: Run tests
       run: |
-        python -m pytest utils/testing/test_all.py -v --tb=short
+        python -m pytest utils/testing/test_all.py -v --tb=long
       
     - name: Run test coverage
       run: |
