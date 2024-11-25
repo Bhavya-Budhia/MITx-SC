@@ -70,32 +70,42 @@ def calculate_intervals(X, y, x_new, model, alpha=0.05):
     Args:
         X (array): Feature matrix
         y (array): Target values
-        x_new (array): New x value for prediction
+        x_new (float): New x value for prediction (scalar)
         model: Fitted regression model
         alpha (float): Significance level
         
     Returns:
         dict: Dictionary with interval calculations
     """
-    # Prepare inputs
-    n = len(y)
+    n = len(X)
+    p = 1  # Number of parameters (assuming simple linear regression)
+    
+    # Get prediction for new x value
+    x_new_array = np.array([[x_new]])  # Reshape for sklearn
+    y_pred = model.predict(x_new_array)[0]
+    
+    # Calculate MSE and standard errors
+    y_fit = model.predict(X)
+    mse = np.sum((y - y_fit) ** 2) / (n - p - 1)
+    
+    # Calculate confidence interval
     x_mean = np.mean(X)
+    x_std = np.std(X)
+    se = np.sqrt(mse * (1/n + (x_new - x_mean)**2 / ((n-1)*x_std**2)))
+    t_val = stats.t.ppf(1 - alpha/2, n - p - 1)
     
-    # Calculate standard errors
-    MSE = np.sum((y - model.predict(X.reshape(-1, 1)))**2) / (n-2)
-    SE_mean = np.sqrt(MSE * (1/n + (x_new - x_mean)**2 / 
-                     np.sum((X - x_mean)**2)))
-    SE_pred = np.sqrt(MSE * (1 + 1/n + (x_new - x_mean)**2 / 
-                     np.sum((X - x_mean)**2)))
+    ci_lower = y_pred - t_val * se
+    ci_upper = y_pred + t_val * se
     
-    # Calculate intervals
-    t_value = stats.t.ppf(1-alpha/2, n-2)
-    y_pred = model.predict(np.array([[x_new]]))
+    # Calculate prediction interval
+    se_pred = np.sqrt(mse * (1 + 1/n + (x_new - x_mean)**2 / ((n-1)*x_std**2)))
+    pi_lower = y_pred - t_val * se_pred
+    pi_upper = y_pred + t_val * se_pred
     
     return {
-        'prediction': float(y_pred),
-        'conf_interval': (float(y_pred - t_value*SE_mean), 
-                         float(y_pred + t_value*SE_mean)),
-        'pred_interval': (float(y_pred - t_value*SE_pred), 
-                         float(y_pred + t_value*SE_pred))
+        'y_pred': y_pred,
+        'ci_lower': ci_lower,
+        'ci_upper': ci_upper,
+        'pi_lower': pi_lower,
+        'pi_upper': pi_upper
     }
