@@ -10,198 +10,125 @@ An interactive educational repository for learning mathematical concepts through
   - Cost minimization
   - Coverage constraints
 
-- **BooBoo Magicians**: Resource allocation optimization
-  - Party package optimization
-  - Resource constraints
-  - Profit maximization
+- **BooBoo Interactive**: Bullwhip Effect Analysis and Mitigation
+  - Supply chain simulation
+  - Demand amplification analysis
+  - Mitigation strategies comparison
+  - Performance visualization
 
-- **FashionFlow Network Design**: Fashion retail supply chain optimization
-  - Multi-product distribution network
-  - Cross-dock operations
-  - Seasonal demand planning
-  - Cost-efficient routing
+- **BookWise Interactive**: Book-to-Bill Ratio Analysis
+  - Order pattern analysis
+  - Performance metrics
+  - Trend visualization
+  - Optimization strategies
 
-- **GameVerse Network Design**: Supply chain network optimization
-  - Multi-product flow optimization
-  - Consolidation center balancing
-  - Capacity constraints
-  - Transportation cost minimization
+### 2. Inventory Management
+- **Basic Concepts**
+  - ABC Analysis
+  - Economic Order Quantity (EOQ)
+  - Safety Stock Calculation
+  - Reorder Point Determination
 
-- **GreenChain Network Design**: Sustainable supply chain optimization
-  - Multi-modal transportation
-  - Carbon emissions tracking
-  - Supplier sustainability scoring
-  - Environmental impact minimization
+- **Advanced Topics**
+  - Multi-product Systems
+  - Service Level Optimization
+  - Cost Trade-off Analysis
+  - Dynamic Inventory Models
 
-### Network Optimization
-- **FashionFlow**: Multi-product distribution network optimization
-  - Cross-dock operations
-  - Seasonal demand planning
-  - Cost-efficient routing
+### 3. Probability and Risk Analysis
+- **GameStop Pre-order Analysis**: Video game pre-order optimization
+  - Demand modeling
+  - Distribution fitting
+  - Inventory optimization
+  - Risk assessment
+  - Monte Carlo simulation
 
-- **GameVerse**: Network design for gaming distribution
-  - Multi-product flow optimization
-  - Consolidation center balancing
-  - Capacity constraints
+- **Supply Chain Risk Analysis**
+  - Bullwhip effect quantification
+  - Demand uncertainty modeling
+  - Service level probability
+  - Risk mitigation strategies
 
-- **GreenChain**: Sustainable supply chain design
-  - Multi-modal transportation
-  - Carbon emissions tracking
-  - Environmental impact minimization
-
-### Production Planning
-- **BeverageCo**: Multi-period production planning
-  - Seasonal demand patterns
-  - Setup costs and times
-  - Shelf-life constraints
-  - Storage capacity management
-
-- **TechCraft Production**: Multi-period production optimization
-  - Resource allocation
-  - Capacity constraints
-  - Cost optimization
-
-### Risk Management
-- **RiskShield**: Supply chain risk optimization
-  - Supplier diversification
-  - Buffer inventory planning
-  - Geographic risk balancing
-  - Service level guarantees
-
-### 2. Case Studies
-- **YOUKEA Cost Analysis**: Activity-based costing for furniture retail
-  - Cost allocation
-  - Profitability analysis
-  - Strategic recommendations
-
-### 3. Probability
-- **GameStop Pre-order Analysis**: Learn probability concepts through video game collector card distribution
-  - Basic probability
-  - Conditional probability
-  - Multiple event probability
-
-- **Booboo Interactive**: Supply chain risk analysis through probability
-  - Risk probability calculations
-  - Stockout probability
-  - Risk boundaries and thresholds
-
-- **Bookwise Interactive**: Book demand forecasting with probability
-  - Demand prediction
-  - Confidence intervals
-  - Multiple confidence levels
-
-### 4. Statistics
-- **SunGlass Hut Inventory**: Apply normal distribution to retail inventory management
+### 4. Statistics and Forecasting
+- **SunGlass Hut Inventory**: Apply normal distribution to retail inventory
   - Service level analysis
   - Z-score calculations
   - Two-stage inventory systems
 
-- **QuickPrint Optimization**: Learn hypothesis testing through process improvement
+- **QuickPrint Optimization**: Process improvement through hypothesis testing
   - T-tests
   - P-value interpretation
-  - Statistical power analysis
+  - Performance metrics
 
-### 5. Regression
-- **CustomFit Prediction**: Apply regression analysis to service time prediction
-  - Linear regression
-  - Model diagnostics
-  - Prediction intervals
+## Repository Structure
+
+```
+MITx-SC/
+├── inventory_management/
+│   ├── basic/
+│   │   ├── abc_analysis.ipynb
+│   │   ├── eoq_analysis.ipynb
+│   │   ├── safety_stock_analysis.ipynb
+│   │   └── reorder_point_analysis.ipynb
+│   └── advanced/
+├── optimization/
+│   ├── booboo_interactive.ipynb
+│   ├── bookwise_interactive.ipynb
+│   └── solutions/
+├── probability/
+│   ├── gamestop_preorder.ipynb
+│   └── solutions/
+└── statistics/
+    ├── sunglass_hut.ipynb
+    └── quickprint.ipynb
+```
+
+## Learning Path Structure
+Each notebook follows a consistent 4-part learning approach:
+1. Concept Introduction and Business Context
+2. Mathematical Foundation and Theory
+3. Implementation and Code Examples
+4. Analysis and Interpretation
+
+## Features
+- Interactive Jupyter notebooks
+- Real-world business scenarios
+- Step-by-step solution guidance
+- Comprehensive visualizations
+- Automated solution verification
+- Extension exercises
+
+## Prerequisites
+- Python 3.8+
+- Jupyter Notebook environment
+- Required libraries:
+  - NumPy
+  - Pandas
+  - Matplotlib
+  - Seaborn
+  - SciPy
+
+## Getting Started
+1. Clone the repository
+2. Install required dependencies
+3. Launch Jupyter Notebook
+4. Navigate to desired topic
+5. Follow guided exercises
+
+## Contributing
+We welcome contributions! Please see our contributing guidelines for details.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+- MITx Supply Chain Management Program
+- Contributors and reviewers
+- Open source community
 
 ## Build Status
 
 [![Python Tests](https://github.com/[your-username]/MITx-SC/actions/workflows/python-tests.yml/badge.svg)](https://github.com/[your-username]/MITx-SC/actions/workflows/python-tests.yml)
-
-## Repository Structure
-MITx-SC/
-├── .github/
-│   └── workflows/
-│       └── python-tests.yml
-├── case_studies/
-│   └── [case study notebooks]
-├── forecasting/
-│   └── [forecasting modules]
-├── inventory_management/
-│   └── [inventory models]
-├── optimization/
-│   ├── network/
-│   │   ├── gameverse/
-│   │   ├── fashionflow/
-│   │   └── greenchain/
-│   └── production/
-│       └── beverageco/
-├── probability/
-│   └── [probability modules]
-├── regression/
-│   └── [regression analysis]
-├── statistics/
-│   └── [statistical analysis]
-├── utils/
-│   └── testing/
-│       ├── __init__.py
-│       ├── test_all.py
-│       ├── probability_tests.py
-│       ├── inventory_tests.py
-│       ├── hypothesis_tests.py
-│       └── regression_tests.py
-├── pytest.ini
-├── requirements.txt
-├── LICENSE
-└── README.md
-
-## Getting Started
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/math_problems.git
-cd math_problems
-```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Run tests:
-```bash
-pytest utils/testing/test_all.py -v
-```
-
-## Problem Structure
-
-Each problem includes:
-1. Business context and problem statement
-2. Step-by-step solution guidance
-3. Code templates
-4. Automated solution verification
-5. Extension questions
-6. Visualization suggestions
-
-## Problem Types and Tools
-
-### Optimization Problems
-- Linear Programming (PuLP)
-- Mixed Integer Programming
-- Network Optimization
-
-### Statistical Analysis
-- Probability Theory
-- Normal Distribution
-- Hypothesis Testing
-- Regression Analysis
-
-### Business Analytics
-- Cost Accounting
-- Resource Allocation
-- Production Planning
-- Inventory Management
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests
-5. Submit a pull request
 
 ## Testing
 
@@ -231,7 +158,3 @@ The repository includes a comprehensive testing framework in `utils/testing/`:
 ### Case Study Tests
 - `test_booboo_interactive.py`: Tests for supply chain risk analysis
 - `test_bookwise_interactive.py`: Tests for demand forecasting
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
