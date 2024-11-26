@@ -112,38 +112,41 @@ An interactive educational repository for learning mathematical concepts through
 [![Python Tests](https://github.com/[your-username]/MITx-SC/actions/workflows/python-tests.yml/badge.svg)](https://github.com/[your-username]/MITx-SC/actions/workflows/python-tests.yml)
 
 ## Repository Structure
-```
-math_problems/
-├── optimization/
-│   ├── bookwise_interactive.md
-│   ├── booboo_interactive.md
-│   ├── distribution/
-│   ├── network/
-│   └── production/
+MITx-SC/
+├── .github/
+│   └── workflows/
+│       └── python-tests.yml
 ├── case_studies/
-│   ├── youkea_interactive.md
-│   ├── manufacturing/
-│   ├── retail/
-│   └── distribution/
+│   └── [case study notebooks]
+├── forecasting/
+│   └── [forecasting modules]
+├── inventory_management/
+│   └── [inventory models]
+├── optimization/
+│   ├── network/
+│   │   ├── gameverse/
+│   │   ├── fashionflow/
+│   │   └── greenchain/
+│   └── production/
+│       └── beverageco/
 ├── probability/
-│   └── gamestop_preorder.md
-│   └── booboo_interactive.md
-│   └── bookwise_interactive.md
-├── statistics/
-│   ├── sunglass_inventory.md
-│   └── quickprint_optimization.md
+│   └── [probability modules]
 ├── regression/
-│   └── customfit_prediction.md
+│   └── [regression analysis]
+├── statistics/
+│   └── [statistical analysis]
 ├── utils/
 │   └── testing/
 │       ├── __init__.py
-│       ├── conftest.py
 │       ├── test_all.py
-│       └── [test modules]
+│       ├── probability_tests.py
+│       ├── inventory_tests.py
+│       ├── hypothesis_tests.py
+│       └── regression_tests.py
+├── pytest.ini
 ├── requirements.txt
 ├── LICENSE
-└── .gitignore
-```
+└── README.md
 
 ## Getting Started
 
