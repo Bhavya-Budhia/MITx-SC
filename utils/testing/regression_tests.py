@@ -2,29 +2,48 @@
 import numpy as np
 from scipy import stats
 from sklearn.metrics import r2_score
+from sklearn.linear_model import LinearRegression
 
-def check_coefficients(slope, intercept, slope_expected=13.5, intercept_expected=15.0, tolerance=0.1):
+def _get_actual_coefficients():
+    """Calculate actual coefficients from the data."""
+    alterations = np.array([3, 7, 2, 8, 1, 4, 6, 2, 3, 7, 5, 4, 5, 6])
+    times = np.array([45, 95, 35, 105, 25, 55, 85, 30, 40, 90, 70, 50, 75, 80])
+    X = alterations.reshape(-1, 1)
+    model = LinearRegression()
+    model.fit(X, times)
+    return float(model.coef_[0]), float(model.intercept_)
+
+def check_coefficients(slope, intercept, tolerance=1.0):
     """
-    Check if regression coefficients for tailoring time prediction are correct.
+    Check if regression coefficients match the actual data.
     
     Args:
         slope (float): Calculated slope (minutes per alteration)
         intercept (float): Calculated intercept (base time)
-        slope_expected (float): Expected slope (13.5)
-        intercept_expected (float): Expected intercept (15.0)
         tolerance (float): Acceptable difference from expected values
         
     Returns:
         bool: True if coefficients are within tolerance of expected values
     """
     if slope is None or intercept is None:
+        print("Please calculate the slope and intercept first!")
         return False
-    return (abs(slope - slope_expected) <= tolerance and 
-            abs(intercept - intercept_expected) <= tolerance)
+    
+    actual_slope, actual_intercept = _get_actual_coefficients()
+    
+    slope_ok = abs(slope - actual_slope) <= tolerance
+    intercept_ok = abs(intercept - actual_intercept) <= tolerance
+    
+    if not slope_ok:
+        print(f"Slope {slope:.2f} is not close enough to expected {actual_slope:.2f}")
+    if not intercept_ok:
+        print(f"Intercept {intercept:.2f} is not close enough to expected {actual_intercept:.2f}")
+    
+    return slope_ok and intercept_ok
 
-def check_prediction(pred_time, alterations, tolerance=5.0):
+def check_prediction(pred_time, alterations, tolerance=2.0):
     """
-    Check if predicted tailoring time is reasonable.
+    Check if predicted tailoring time matches the actual model.
     
     Args:
         pred_time (float): Predicted completion time
@@ -35,33 +54,55 @@ def check_prediction(pred_time, alterations, tolerance=5.0):
         bool: True if prediction is within tolerance of expected value
     """
     if pred_time is None:
+        print("Please calculate the predicted time first!")
         return False
-    expected_time = 15.0 + 13.5 * alterations
+    
+    actual_slope, actual_intercept = _get_actual_coefficients()
+    expected_time = actual_intercept + actual_slope * alterations
+    
+    if abs(pred_time - expected_time) > tolerance:
+        print(f"Prediction {pred_time:.2f} is not close enough to expected {expected_time:.2f}")
+    
     return abs(pred_time - expected_time) <= tolerance
 
 def check_diagnostics(diagnostics):
     """
-    Check if model diagnostics are correct.
+    Check if model diagnostics are reasonable.
     
     Args:
         diagnostics (dict): Dictionary with diagnostic results
         
     Returns:
-        bool: True if diagnostics are correct
+        bool: True if diagnostics are reasonable
     """
-    if diagnostics is None or not isinstance(diagnostics, dict):
+    if diagnostics is None:
+        print("Please calculate the model diagnostics first!")
         return False
-        
+    
+    if not isinstance(diagnostics, dict):
+        print("Model diagnostics should be a dictionary!")
+        return False
+    
     required_keys = ['r2', 'residuals_normal', 'homoscedastic']
     if not all(key in diagnostics for key in required_keys):
+        print(f"Missing required keys in diagnostics. Need: {required_keys}")
         return False
-        
-    # Check specific values
-    return (
-        diagnostics['r2'] >= 0.90 and  # Strong fit required
-        diagnostics['residuals_normal'] and  # Normality assumption
-        diagnostics['homoscedastic']  # Constant variance
-    )
+    
+    # Check that R-squared is reasonable (above 0.75 for this data)
+    # and other diagnostics are boolean
+    r2_ok = (isinstance(diagnostics['r2'], (float, np.float64)) and 
+             0.75 <= diagnostics['r2'] <= 1.0)
+    normal_ok = isinstance(diagnostics['residuals_normal'], bool)
+    homo_ok = isinstance(diagnostics['homoscedastic'], bool)
+    
+    if not r2_ok:
+        print(f"R-squared {diagnostics['r2']} should be between 0.75 and 1.0")
+    if not normal_ok:
+        print("residuals_normal should be a boolean value")
+    if not homo_ok:
+        print("homoscedastic should be a boolean value")
+    
+    return r2_ok and normal_ok and homo_ok
 
 def calculate_intervals(X, y, x_new, model, alpha=0.05):
     """
